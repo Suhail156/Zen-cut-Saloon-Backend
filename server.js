@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import userrouter from './Routes/userRoute.js'
 import cors from 'cors'
 import shoprouter from './Routes/shopRoute.js'
+import shopOwner from './Routes/shopOwnerRoute.js'
  dotenv.config()
 const app=express()
  
@@ -18,6 +19,8 @@ app.use(express.json())
  app.use('/api/users',userrouter)
 // routes for shop detailes
 app.use('/api/shop',shoprouter)
+//routes for shop owner
+app.use('/api/shopowner',shopOwner)
 const PORT = process.env.PORT || 7000;
 app.listen(PORT,()=>{
     console.log(`Server running on http://localhost:${PORT}`);

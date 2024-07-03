@@ -1,6 +1,6 @@
 import Joi from "joi"
 
-const userjoi = Joi.object({
+const ownerJoi = Joi.object({
     username:Joi.string(),
     shopname:Joi.string(),
     phone:Joi.number(),
@@ -9,4 +9,4 @@ const userjoi = Joi.object({
     category:Joi.string(),
    
 })
-export default userjoi
+export default ownerJoi
