@@ -7,72 +7,85 @@ import dotenv from 'dotenv'
 const otpStore = new Map();
 dotenv.config()
 
- export const signup=async(req,res)=>{
-    try {
-        const{value,error}=userjoi.validate(req.body)
-   //   console.log(req.body);
 
-    if(error){
-        return res.status(400).json({status:"error"})
-    }
-     const{username,email,password,phone}=value;
-    
-     //check email already had
-     const existinguser=await User.findOne({email:email})
-     if(existinguser){
-        return res.status(400).json({status:"error",message:"already taken!"})
-     }
-     //hash password
-     const hashedPassword=await bcrypt.hash(password,10)
-   
-       //otp
-       const otp = await sendOTP(email);
-       otpStore.set(email, { otp, timestamp: Date.now() });
-
-     const  userData=new User({
-        username:username,
-        email:email,
-        password:hashedPassword,
-        phone:phone
-     })
-     otpStore.set(`${email}_data`, userData);
-     await userData.save()
-     return res.status(201).json({ status: "success",message: "OTP sent to email. Please verify",
-        }); 
-    } catch (error) {
-        console.log(error);
-    } 
- }
-
-export const verifyOTP = async (req, res) => {
-   const { email, otp } = req.body;
- 
-   const storedOtp = otpStore.get(email);
-   const userData = otpStore.get(email + "_data");
- 
-   if (!storedOtp || storedOtp !== otp) {
-     return res.status(400).json({ error: "Invalid or expired OTP." });
+export const signup = async (req, res) => {
+   const { value, error } = userjoi.validate(req.body);
+   if (error) {
+     return res.status(400).json({ 
+       status: "error",
+       message: error.details[0].message 
+     });
    }
  
+   const { username, email, phone, password } = value;
+ 
+   try {
+     const hashedPassword = await bcrypt.hash(password, 10);
+     const existingUser = await User.findOne({ email });
+     if (existingUser) {
+       return res.status(400).json({ 
+         status: "error",
+         message: "Email already taken." 
+       });
+     }
+ 
+     const otp = await sendOTP(email);
+     otpStore.set(email, otp);
+ 
+     const userData = { username, email, phone, password: hashedPassword };
+     otpStore.set(email + "_data", userData);
+ 
+     return res.status(200).json({
+       status: "success", 
+       message: "OTP sent to email. Please verify.",
+     });
+   } catch (err) {
+     console.error("Error during user registration:", err);
+     return res.status(500).json({ 
+       status: "error",
+       message: "Internal server error." 
+     });
+   }
+ };
+
+ export const verifyOTP = async (req, res) => {
+   const { email, otp } = req.body;
+   console.log("request.body = ",req.body);
+   const storedOtp = otpStore.get(email);
+   const userData = otpStore.get(email + "_data");
+
+   console.log(`Received OTP verification request for ${email}`); 
+
+   if (!storedOtp || storedOtp !== otp) {
+     console.log(`Invalid OTP for ${email}`); 
+     return res.status(400).json({
+       status: "error",
+       message: "Invalid or expired OTP."
+     });
+   }
+
    try {
      const newUser = new User(userData);
      await newUser.save();
- 
+
      otpStore.delete(email);
      otpStore.delete(email + "_data");
- 
-     res.status(201).json({
-       status: "Success",
+
+     console.log(`User ${email} successfully registered`); 
+
+     return res.status(201).json({
+       status: "success",
        message: "User successfully registered.",
        data: newUser,
      });
    } catch (err) {
      console.error("Error during OTP verification:", err);
-     res.status(500).json({ error: err.message });
+     return res.status(500).json({
+       status: "error",
+       message: "Internal server error."
+     });
    }
  };
-   
-
 
  export const login = async (req, res) => {
    try {

@@ -1,21 +1,6 @@
 
 import mongoose from "mongoose";
 
-const categorySchema = new mongoose.Schema({
-    haircut: {
-        type: String,
-        required: true
-    },
-    facial: {
-        type: String,
-        required: true
-    },
-    beard: {
-        type: String,
-        required: true
-    }
-});
-
 const shopSchema = new mongoose.Schema({
     shopname: {
         type: String,
@@ -29,10 +14,6 @@ const shopSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    password:{
-       type:String,
-       required:true
-    },
     image: {
         type: String,
         required: true
@@ -42,7 +23,10 @@ const shopSchema = new mongoose.Schema({
         required:true
     },
 
-    category: [categorySchema],
+    category:{
+        type:String,
+        required:true
+    },
     
     isDeleted:{
         type:Boolean,

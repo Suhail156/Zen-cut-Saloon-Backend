@@ -1,13 +1,12 @@
 import Shop from "../Models/shopSchema.js"
 
 export const addShop=async(req,res)=>{
-    const{shopname,phone,email,password,image,location,category}=req.body
+    const{shopname,phone,email,image,location,category}=req.body
        console.log(req.body);
     const newShop=new Shop({
         shopname:shopname,
         phone:phone,
         email:email,
-        password:password,
         image:image,
         location:location,
         category:category
