@@ -54,7 +54,7 @@ const imageUpload = (req, res, next) => {
             console.error(error);
             return res.status(500).json({
                 status: "error",
-                message: "Error uploading file to Cloudinary"
+                message: "Error uploading file to Cloudinarys"
             });
         }
     });
