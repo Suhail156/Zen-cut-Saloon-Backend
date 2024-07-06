@@ -1,4 +1,3 @@
-
 import mongoose from "mongoose";
 
 const shopSchema = new mongoose.Schema({
@@ -18,23 +17,20 @@ const shopSchema = new mongoose.Schema({
         type: String,
         required: true
     },  
-    location:{
-        type:String,
-        required:true
+    location: {
+        type: String,
+        required: true
     },
-
-    category:{
-        type:String,
-        required:true
-    },
-    
-    isDeleted:{
-        type:Boolean,
-        default:false
-    },
-
+    category: [{
+        type: String,
+        required: true
+    }],
+    isDeleted: {    
+        type: Boolean,
+        default: false
+    }
 });
 
 const Shop = mongoose.model("Shop", shopSchema);
 
-export default Shop;
+export default Shop;    
