@@ -8,4 +8,5 @@ import uploadImage from '../Middlewares/upload.js'
  router.post('/shops',uploadImage,addShop)
  router.get('/viewshops',viewShop)
  router.get("/shopbyid/:id",shopById)
+ 
  export default router
