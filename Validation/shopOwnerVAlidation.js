@@ -7,6 +7,8 @@ const ownerJoi = Joi.object({
     email:Joi.string(),
     password:Joi.string(),
     category:Joi.string(),
+    district:Joi.string(),
+    state:Joi.string()
    
 })
 export default ownerJoi

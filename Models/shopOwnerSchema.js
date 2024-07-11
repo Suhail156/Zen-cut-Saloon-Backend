@@ -3,32 +3,44 @@ import mongoose from "mongoose";
 const shopOwnerSchema = new mongoose.Schema({
   username: {
     type: String,
-    required: true
+    required: true,
   },
   shopname: {
     type: String,
-    required: true
+    required: true,
   },
   phone: {
     type: String,
-    required: true
+    required: true,
   },
   email: {
     type: String,
-    required: true
+    required: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   isDeleted: {
     type: Boolean,
-    default: false
+    default: false,
   },
-  category: [{
+
+  state: {
     type: String,
-    required: true
-  }]
+    required: true,
+  },
+  district: {
+    type: String,
+    required: true,
+  },
+
+  category: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
 });
 
 const shopOwner = mongoose.model("shopOwner", shopOwnerSchema);

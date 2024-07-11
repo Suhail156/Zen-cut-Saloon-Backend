@@ -3,7 +3,7 @@ import mongoose  from "mongoose";
 import dotenv from "dotenv";
 import userrouter from './Routes/userRoute.js'
 import cors from 'cors'
-import shoprouter from './Routes/shopRoute.js'
+import shoprouter from './Routes/OwnerShopRoute.js'
 import shopOwner from './Routes/shopOwnerRoute.js'
  dotenv.config()
 const app=express()

@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 
 dotenv.config()
-export const verifytoken=async(req,res,next)=>{
+export const admintoken=async(req,res,next)=>{
         try {
             const token=req.headers['authorization']
             if(!token){

@@ -14,7 +14,7 @@ export const ownerSignup = async (req, res) => {
     });
   }
   console.log(error);
-  const { username, shopname, email, password, category, phone } = value;
+  const { username, shopname, email, password, category, phone ,district,state} = value;
 
   try {
     // hashed password
@@ -35,7 +35,9 @@ export const ownerSignup = async (req, res) => {
       email: email,
       password: hashedPassword,
       category: category,
-      phone: phone
+      phone: phone,
+      district:district,
+      state:state
     });
     console.log(newOwner);
     await newOwner.save();
