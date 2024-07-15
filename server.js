@@ -5,6 +5,7 @@ import userrouter from './Routes/userRoute.js'
 import cors from 'cors'
 import shoprouter from './Routes/OwnerShopRoute.js'
 import shopOwner from './Routes/shopOwnerRoute.js'
+import usershop from './Routes/userShopRoute.js'
  dotenv.config()
 const app=express()
  
@@ -21,6 +22,8 @@ app.use(express.json())
 app.use('/api/shop',shoprouter)
 //routes for shop owner
 app.use('/api/shopowner',shopOwner)
+//routes for user view shop
+app.use('/api/usershop',usershop)
 const PORT = process.env.PORT || 7000;
 app.listen(PORT,()=>{
     console.log(`Server running on http://localhost:${PORT}`);
