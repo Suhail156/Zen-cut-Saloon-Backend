@@ -15,8 +15,8 @@ export const signup = async (req, res) => {
        status: "error",
        message: error.details[0].message 
      });
-   }
- 
+    }
+  
    const { username, email, phone, password } = value;
  
    try {
@@ -112,3 +112,20 @@ export const signup = async (req, res) => {
        console.log(error, 'dd');
    }
 };
+// user find by id
+
+export const UserViewById=async(req,res)=>{
+   try {
+     const userId=req.params.id
+
+       const userDetailes=await User.findById(userId)
+       if(!userDetailes){
+        return res.status(404).json({error:"User not found"})
+        
+       }
+       return res.status(200).json({message:"succsfully Fetched",userDetailes})
+   } catch (error) {
+    console.log(error);
+   }
+   
+}
