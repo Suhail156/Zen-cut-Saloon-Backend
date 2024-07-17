@@ -118,12 +118,12 @@ export const UserViewById=async(req,res)=>{
    try {
      const userId=req.params.id
 
-       const userDetailes=await User.findById(userId)
+       const userDetailes=await User.findById(userId) 
        if(!userDetailes){
         return res.status(404).json({error:"User not found"})
         
        }
-       return res.status(200).json({message:"succsfully Fetched",userDetailes})
+       return res.status(200).json({status: "success", message: "User found", data:userDetailes})
    } catch (error) {
     console.log(error);
    }

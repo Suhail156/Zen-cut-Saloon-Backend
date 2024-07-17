@@ -53,7 +53,7 @@ export const shopById=async(req,res)=>{
     if(!shops){
         return res.status(404).json({Error:"not found",message:"shop not found"})
     }
-    return res.status(200).json({status: "Ok", message: "Product found", data: shops})
+    return res.status(200).json({status: "success", message: "Product found", data: shops})
 
 
 }
