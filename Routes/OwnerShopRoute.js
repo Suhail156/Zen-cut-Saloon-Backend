@@ -1,7 +1,7 @@
 import express from 'express'
 import { addShop, shopById, viewShop } from '../Controller/OwnrShopController.js'
 import uploadImage from '../Middlewares/upload.js'
-import { admintoken } from '../Middlewares/OwnerMiddleware.js'
+import { ownertoken} from '../Middlewares/OwnerMiddleware.js'
 
 
  const router=express.Router()
@@ -9,5 +9,5 @@ import { admintoken } from '../Middlewares/OwnerMiddleware.js'
  router.get('/viewshops',viewShop)
  router.get("/shopbyid/:id",shopById)
  
- router.use(admintoken) 
+ router.use(ownertoken) 
  export default router  
