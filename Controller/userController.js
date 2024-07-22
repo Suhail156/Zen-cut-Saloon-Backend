@@ -95,8 +95,10 @@ export const signup = async (req, res) => {
        const validUser = await User.findOne({ email });
        if (!validUser) {
            return res.status(404).json({ error: "user not found" });
-       }
-
+       }  
+         if(validUser.isDeleted==true){
+          return res.status(400).json({message:"your account is suspended"})
+         }
        const validPassword = bcrypt.compareSync(password, validUser.password);
        if (!validPassword) {
            return res.status(401).json({ error: "wrong credential" });

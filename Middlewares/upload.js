@@ -51,7 +51,7 @@ const uploadImage = (req, res, next) => {
             });
 
             req.cloudinaryImageUrl = result.secure_url;
-            console.log("Cloudinary Image URL:", req.cloudinaryImageUrl); // Debugging
+            console.log("Cloudinary Image URL:", req.cloudinaryImageUrl); 
             next();
         } catch (error) {
             console.error("Cloudinary Error:", error);

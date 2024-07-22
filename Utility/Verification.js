@@ -9,9 +9,10 @@ const transporter = nodemailer.createTransport({
   auth: {
     user: process.env.email,
     pass: process.env.email_password,
+    // pass: "dzkh lzmf cfbw hlfu",
   },
 });
-
+console.log(process.env.email_password)
 export const sendOTP = async (email) => {
   const otp = crypto.randomInt(100000, 999999).toString();
 

@@ -33,3 +33,29 @@ export const adminFetchUser=async(req,res)=>{
         console.log(error);
     }
 }
+
+
+
+//admin block users
+export const adminBlock=async(req,res)=>{
+     
+    const userid=req.params.id
+    try {
+        
+        const userByid=await User.findById(userid)
+    
+          if(userByid.isDeleted==false){
+            (userByid.isDeleted=true)
+            await userByid.save()
+            return res.status(200).json({message:"Blocked"})
+          }
+          else{
+            (userByid.isDeleted=false)
+            await userByid.save()
+            return res.status(200).json({message:"Unblocked"})
+          }
+
+    } catch (error) {
+        console.log(error);
+    }
+}
