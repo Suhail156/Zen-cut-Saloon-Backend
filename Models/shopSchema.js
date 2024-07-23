@@ -23,7 +23,7 @@ const shopSchema = new mongoose.Schema({
     },
     category: [{
         type: String,
-        required: true
+        required: true 
     }],
     isDeleted: {    
         type: Boolean,

@@ -28,3 +28,24 @@ export const UserShopId=async(req,res)=>{
     }
     
 }
+
+
+export const shopByCategory=async(req,res)=>{
+    try {
+        const{locations}=req.query
+        const shops=await Shop.find({
+         $or:[
+            {location:{$regex:new RegExp(locations,'i')}},
+            {shopname:{$regex:new RegExp(locations,'i')}},
+            {category:{$regex:new RegExp(locations,'i')}}
+         ]
+        }).select('shopname number location image phone')
+        if(shops.length===0){
+            return  res.status(404).json({message:"no item found"})
+        }
+        return res.status(200).json({shops})
+    } catch (error) {
+        console.log(error);
+    }
+   
+}
