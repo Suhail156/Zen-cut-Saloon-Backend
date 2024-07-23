@@ -1,6 +1,7 @@
 import jwt from'jsonwebtoken'
 import dotenv from 'dotenv'
 import User from '../Models/userSchema.js'
+import shopOwner from '../Models/shopOwnerSchema.js'
 dotenv.config()
 export const adminLogin=async (req,res)=>{
     try {
@@ -55,6 +56,22 @@ export const adminBlock=async(req,res)=>{
             return res.status(200).json({message:"Unblocked"})
           }
 
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+//shop owner
+
+//fetch shop owner in adminside
+export const adminFetchShopOwners=async(req,res)=>{
+    try {
+        const userslist=await shopOwner.find()
+        if(!userslist){
+            return res.status(404).json({error:"error not found", message:'User not Found'})
+        }
+
+        return res.status(200).json({status: "Ok", message: "User found", data: userslist})
     } catch (error) {
         console.log(error);
     }
