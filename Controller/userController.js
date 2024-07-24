@@ -90,7 +90,6 @@ export const signup = async (req, res) => {
  export const login = async (req, res) => {
    try {
        const { email, password } = req.body;
-       console.log(req.body);
 
        const validUser = await User.findOne({ email });
        if (!validUser) {
@@ -106,7 +105,6 @@ export const signup = async (req, res) => {
 
        const token = jwt.sign({ id: validUser._id }, process.env.USER_SECRET_TOKEN);
        const { password: hashedPassword, ...rest } = validUser._doc;
-       console.log(token);
 
        res.cookie("access_token", token, { httpOnly: true });
        return res.status(200).json({ message: 'successfully logged in', data: { ...rest, token } });

@@ -41,6 +41,10 @@ const shopOwnerSchema = new mongoose.Schema({
       required: true,
     },
   ],
+  isAdmin:{
+    type:Boolean,
+    default:false
+  }
 });
 
 const shopOwner = mongoose.model("shopOwner", shopOwnerSchema);

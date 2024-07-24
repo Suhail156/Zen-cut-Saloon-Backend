@@ -13,7 +13,7 @@ const app=express()
 app.use(cors())
 mongoose.connect(process.env.db)
 .then(()=>console.log('db connected'))
-.catch(error =>console.log(error,"dfghj"))
+.catch(error =>console.log(error))
 //  middleware
 app.use(express.json())
 
