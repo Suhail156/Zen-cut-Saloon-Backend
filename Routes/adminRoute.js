@@ -1,5 +1,5 @@
 import express from 'express'
-import { adminBlock, adminFetchShopOwners, adminFetchUser, adminLogin } from '../Controller/AdminController.js'
+import { adminBlock, adminFetchById, adminFetchShopOwners, adminFetchUser, adminLogin } from '../Controller/AdminController.js'
 const router=express.Router()
 
 router.post('/adminlogin',adminLogin)
@@ -10,5 +10,5 @@ router.patch('/adminblock/:id',adminBlock)
 
 //shopOwners
 router.get('/adminownerview',adminFetchShopOwners)
-
+router.get('/adminviewbyid/:id',adminFetchById)
 export default router   

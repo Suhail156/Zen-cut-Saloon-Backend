@@ -76,3 +76,17 @@ export const adminFetchShopOwners=async(req,res)=>{
         console.log(error);
     }
 }
+
+// fetch shop owner by id 
+export const adminFetchById=async(req,res)=>{
+      const ownerId=req.params.id
+    try {
+        const owners=await shopOwner.findById(ownerId,{isAdmin:false})
+        if(!owners){
+            return res.status(200).json({message:"not found"})
+        }
+          return res.status(200).json({message:"found",owners})
+    } catch (error) {
+        console.log(error);
+    }
+}
