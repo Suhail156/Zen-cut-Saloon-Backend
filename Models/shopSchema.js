@@ -28,7 +28,11 @@ const shopSchema = new mongoose.Schema({
     isDeleted: {    
         type: Boolean,
         default: false
-    }
+    },
+    booking:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Booking"
+    }],
 });
 
 const Shop = mongoose.model("Shop", shopSchema);

@@ -81,7 +81,7 @@ export const adminFetchShopOwners=async(req,res)=>{
 export const adminFetchById=async(req,res)=>{
       const ownerId=req.params.id
     try {
-        const owners=await shopOwner.findById(ownerId,{isAdmin:false})
+        const owners=await shopOwner.findById(ownerId)
         if(!owners){
             return res.status(200).json({message:"not found"})
         }

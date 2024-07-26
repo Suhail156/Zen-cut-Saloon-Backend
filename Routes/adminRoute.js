@@ -10,5 +10,5 @@ router.patch('/adminblock/:id',adminBlock)
 
 //shopOwners
 router.get('/adminownerview',adminFetchShopOwners)
-router.get('/adminviewbyid/:id',adminFetchById)
-export default router   
+router.patch('/adminviewbyid/:id',adminFetchById)
+export default router       

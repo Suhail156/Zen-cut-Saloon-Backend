@@ -31,7 +31,11 @@ import mongoose from "mongoose";
     isDeleted:{
         type:Boolean,
         default:false
-    }
+    },
+    booking:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Booking"
+    }]
  })
  const User=mongoose.model("User",userSchema)
  export default User
