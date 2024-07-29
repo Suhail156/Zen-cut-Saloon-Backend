@@ -29,6 +29,14 @@ const shopSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    startTime:{
+        type:String,
+        required:true
+    },
+    endTime:{
+        type:String,
+        required:true
+    },
     booking:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Booking"

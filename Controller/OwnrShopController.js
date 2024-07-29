@@ -1,7 +1,7 @@
 import Shop from "../Models/shopSchema.js";
 
 export const addShop = async (req, res) => {
-    const { shopname, phone, email, location, category } = req.body;
+    const { shopname, phone, email, location, category,startTime,endTime } = req.body;
 
     if (!req.cloudinaryImageUrl) {
         return res.status(400).json({
@@ -16,7 +16,9 @@ export const addShop = async (req, res) => {
         email,
         image: req.cloudinaryImageUrl,
         location,
-        category
+        category,
+        startTime,
+        endTime
     });
 
     try {
