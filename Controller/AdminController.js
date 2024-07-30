@@ -90,3 +90,30 @@ export const adminFetchById=async(req,res)=>{
         console.log(error);
     }
 }
+// edit ownerDetailes
+export const adminEditOwners=async(req,res)=>{
+    const ownerId=req.params.id
+    try {
+        const{username,shopname,phone,email,password,state,district,category}=req.body
+
+        const updateOwners=await shopOwner.findByIdAndUpdate(ownerId,
+            {$set:{username,shopname,phone,email,password,state,district,category}},
+            {new:true}
+        )
+        if(updateOwners){
+            const updateOwners=await shopOwner.findById(ownerId)
+            return res.status(200).json({
+                status: "success",
+                message: "successfully updated the product",
+                data: updateOwners,
+              })
+        }
+        else {
+            return res
+              .status(404)
+              .json({ status: "error", message: "product not found" });
+          }
+    } catch (error) {
+       console.log(error); 
+    }
+}
