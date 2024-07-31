@@ -7,6 +7,7 @@ import shoprouter from './Routes/OwnerShopRoute.js'
 import shopOwner from './Routes/shopOwnerRoute.js'
 import usershop from './Routes/userShopRoute.js'
 import adminrouter from './Routes/adminRoute.js'
+import bookingrouter from './Routes/bookingUser.js'
  dotenv.config()
 const app=express()
  
@@ -21,6 +22,8 @@ app.use(express.json())
  app.use('/api/users',userrouter)
 // routes for shop detailes
 app.use('/api/shop',shoprouter)
+//routes for booking
+app.use('/api/userbooking',bookingrouter)
 //routes for shop owner
 app.use('/api/shopowner',shopOwner)
 //routes for user view shop
