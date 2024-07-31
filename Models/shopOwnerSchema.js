@@ -35,12 +35,12 @@ const shopOwnerSchema = new mongoose.Schema({
     required: true,
   },
 
-  category: [
+  category: 
     {
       type: String,
       required: true,
     },
-  ],
+  
   isAdmin:{
     type:Boolean,
     default:false

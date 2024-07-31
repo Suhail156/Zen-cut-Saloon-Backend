@@ -2,11 +2,7 @@ import mongoose from "mongoose";
 
 const bookingUserSchema = new mongoose.Schema({
     startTime: {
-        type: Number,
-        required: true
-    },
-    endTime: {
-        type: Number,
+        type: String,
         required: true
     },
     userId: {
@@ -19,13 +15,17 @@ const bookingUserSchema = new mongoose.Schema({
         ref: "Shop",
         required: true
     },
-    email: {
+    phone: {
         type: String,
         required: true
     },
     username: {
         type: String,
         required: true
+    },
+    date:{
+        type:String,
+        required:true
     }
 });
 

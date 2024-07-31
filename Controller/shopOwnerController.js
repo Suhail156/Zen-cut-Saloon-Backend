@@ -3,6 +3,7 @@ import shopOwner from "../Models/shopOwnerSchema.js"
 import ownerJoi from "../Validation/shopOwnerVAlidation.js"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import Booking from "../Models/bookingUserSchema.js"
 
 export const ownerSignup = async (req, res) => {
   const { value, error } = ownerJoi.validate(req.body);
@@ -77,4 +78,15 @@ export const ownerLogin=async(req,res)=>{
    } catch (error) {
     console.log(error);
    }
+}
+
+//shop owner view booking detailes
+  
+export const allBookings=async(req,res)=>{
+  const bookings=await Booking.find()
+
+  if(bookings.length===0){
+    return  res.status(404).json({message:"no bookings"})
+  }
+ return res.status(200).json({message:"successfully fetched",data:bookings})
 }

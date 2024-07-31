@@ -21,10 +21,10 @@ const shopSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    category: [{
+    category: {
         type: String,
         required: true 
-    }],
+    },
     isDeleted: {    
         type: Boolean,
         default: false
