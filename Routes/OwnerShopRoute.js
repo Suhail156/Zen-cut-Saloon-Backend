@@ -5,7 +5,7 @@ import { ownertoken} from '../Middlewares/OwnerMiddleware.js'
 
 
  const router=express.Router()
- router.post('/shops',uploadImage,addShop)
+ router.post('/shops/:id',uploadImage,addShop)
  router.get('/viewshops',viewShop)
  router.get("/shopbyid/:id",shopById)
  

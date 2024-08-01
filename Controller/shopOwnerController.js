@@ -4,10 +4,10 @@ import ownerJoi from "../Validation/shopOwnerVAlidation.js"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import Booking from "../Models/bookingUserSchema.js"
+import Shop from "../Models/shopSchema.js"
 
 export const ownerSignup = async (req, res) => {
   const { value, error } = ownerJoi.validate(req.body);
-  console.log(req.body);
   if (error) {
     return res.status(400).json({
       status: "error",
@@ -40,7 +40,6 @@ export const ownerSignup = async (req, res) => {
       district:district,
       state:state
     });
-    console.log(newOwner);
     await newOwner.save();
     return res.status(201).json({
       status: "success",
@@ -72,7 +71,6 @@ export const ownerLogin=async(req,res)=>{
     }
     const token = jwt.sign({ id: uservalid._id }, process.env.OWNER_SECRET_TOKEN);
     const { password: hashedPassword, ...rest } = uservalid._doc;
-    console.log(token);
     res.cookie("access_token", token, { httpOnly: true });
        return res.status(200).json({ message: 'successfully logged in', data: { ...rest, token } });
    } catch (error) {
@@ -83,10 +81,40 @@ export const ownerLogin=async(req,res)=>{
 //shop owner view booking detailes
   
 export const allBookings=async(req,res)=>{
-  const bookings=await Booking.find()
 
-  if(bookings.length===0){
+  try {
+    const ownerId = req.params.id
+    const owner = await shopOwner.findById(ownerId)
+    .populate({
+      path:'booking',
+      populate:{path:'shopId'}
+    })
+    
+  if(owner.length===0){
     return  res.status(404).json({message:"no bookings"})
   }
- return res.status(200).json({message:"successfully fetched",data:bookings})
+    return res.status(200).json({message:"successfully fetched",data:owner})
+  } catch (error) {
+    console.log(error)
+  }
 }
+
+//shop owner view shop deatiles
+
+export const allshops=async(req,res)=>{
+ try {
+   const ownerId=req.params.id
+  const owner=await shopOwner.findById(ownerId)
+    if(!owner){
+      return res.status(404).json({message:"owner not found"})
+    }
+   const shop=await Shop.find(owner)
+  if(!shop){
+    return  res.status(404).json({message:"no shops"})
+  }
+ return res.status(200).json({message:"successfully fetched",data:shop})
+ } catch (error) {
+  
+ }
+}
+

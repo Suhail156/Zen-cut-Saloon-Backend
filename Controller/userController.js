@@ -50,7 +50,6 @@ export const signup = async (req, res) => {
 
  export const verifyOTP = async (req, res) => {
    const { email, otp } = req.body;
-   console.log("request.body = ",req.body);
    const storedOtp = otpStore.get(email);
    const userData = otpStore.get(email + "_data");
 

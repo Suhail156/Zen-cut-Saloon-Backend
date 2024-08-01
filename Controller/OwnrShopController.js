@@ -1,8 +1,16 @@
+import shopOwner from "../Models/shopOwnerSchema.js";
 import Shop from "../Models/shopSchema.js";
 
 export const addShop = async (req, res) => {
     const { shopname, phone, email, location, category,startTime,endTime } = req.body;
-
+    const ownerId = req.params.id
+     const owner=await shopOwner.findById(ownerId)
+     if(!owner){
+        return res.status(404).json({
+            status:"error",
+            message:"owner not found"
+        })
+     }
     if (!req.cloudinaryImageUrl) {
         return res.status(400).json({
             status: "error",
@@ -11,6 +19,7 @@ export const addShop = async (req, res) => {
     }
 
     const newShop = new Shop({
+        ownerId,
         shopname,
         phone,
         email,
@@ -41,7 +50,6 @@ export const addShop = async (req, res) => {
 export const viewShop=async(req,res)=>{
 
     const shops=await Shop.find()
-    console.log(shops);
     if(!shops){
         return   res.status(404).json({meassge:"unable to get shops"})
     }

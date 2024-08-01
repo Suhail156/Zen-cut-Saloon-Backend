@@ -6,7 +6,6 @@ dotenv.config()
 export const adminLogin=async (req,res)=>{
     try {
         const{email,password}=req.body
-        console.log(req.body ,'ff');
         if(email===process.env.ADMIN_EMAIL&&password===process.env.ADMIN_PASSWORD){
         const token=jwt.sign({email},process.env.ADMIN_ACCESS_TOKEN)
         res.cookie('access_token', token, { httpOnly: true });
@@ -76,6 +75,26 @@ export const adminFetchShopOwners=async(req,res)=>{
         console.log(error);
     }
 }
+// admin approve and reject shopowner
+     
+export const adminApproveReject=async(req,res)=>{
+    try {
+        const ownerslist=await shopOwner.find({isAdmin:false})
+        if(!ownerslist){
+            return res.status(404).json({error:"error not found", message:'User not Found'})
+        }
+           console.log(owner);
+        return res.status(200).json({status: "Ok", message: " Pending Request ", data: ownerslist})
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+
+
+
+
 
 // fetch shop owner by id 
 export const adminFetchById=async(req,res)=>{

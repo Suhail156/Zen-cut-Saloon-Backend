@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 
 const shopSchema = new mongoose.Schema({
+    ownerId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "shopOwner",
+        required: true
+    },
     shopname: {
         type: String,
         required: true
@@ -21,26 +26,27 @@ const shopSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    category: {
+    category: [{
         type: String,
         required: true 
-    },
+    }],
     isDeleted: {    
         type: Boolean,
         default: false
     },
     startTime:{
         type:String,
-        required:true
+        // required:true
     },
     endTime:{
         type:String,
-        required:true
+        // required:true
     },
     booking:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Booking"
     }],
+
 });
 
 const Shop = mongoose.model("Shop", shopSchema);

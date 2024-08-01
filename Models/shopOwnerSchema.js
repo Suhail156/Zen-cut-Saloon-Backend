@@ -28,23 +28,27 @@ const shopOwnerSchema = new mongoose.Schema({
 
   state: {
     type: String,
-    required: true,
+    // required: true,
   },
   district: {
     type: String,
-    required: true,
+    // required: true,
   },
 
-  category: 
+  category: [{
+    type: String,
+    required: true,
+  }],
+  booking: [
     {
-      type: String,
-      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Booking",
     },
-  
-  isAdmin:{
-    type:Boolean,
-    default:false
-  }
+  ],
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const shopOwner = mongoose.model("shopOwner", shopOwnerSchema);
