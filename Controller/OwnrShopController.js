@@ -32,11 +32,14 @@ export const addShop = async (req, res) => {
 
     try {
         await newShop.save();
+        owner.shopId.push(newShop._id)
+        await owner.save()
         return res.status(201).json({
             status: "success",
             message: "Shop added successfully",
             data: newShop
         });
+
     } catch (error) {
         console.error("MongoDB Error:", error);
         return res.status(500).json({

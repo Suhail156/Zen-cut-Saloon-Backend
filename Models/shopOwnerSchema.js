@@ -49,6 +49,13 @@ const shopOwnerSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  shopId:[
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Shop",
+      required:true
+    },
+  ]
 });
 
 const shopOwner = mongoose.model("shopOwner", shopOwnerSchema);

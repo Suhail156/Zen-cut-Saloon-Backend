@@ -46,6 +46,8 @@ export const bookingUser = async (req, res) => {
         email: user.email,
         subject: "Your booking status",
         text: 'Your Appointment is confirmed ',
+        date:`${date}`,
+        time:`${startTime}`
       };
       
       await sendmail(userdata);
@@ -53,6 +55,8 @@ export const bookingUser = async (req, res) => {
         email: Owner.email,
         subject: "Your booking status",
         text: 'a new appointment has been scheduled ',
+         date:`${date}`,
+        time:`${startTime}`
       };
       
       await sendmail(data);

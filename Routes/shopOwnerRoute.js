@@ -1,5 +1,5 @@
 import express from 'express'
-import { allBookings, ownerLogin, ownerSignup } from '../Controller/shopOwnerController.js'
+import { allBookings, allshops, ownerLogin, ownerSignup } from '../Controller/shopOwnerController.js'
 import { ownertoken } from '../Middlewares/OwnerMiddleware.js'
 
 const router=express.Router()
@@ -10,4 +10,5 @@ const router=express.Router()
     res.json({ message: 'This is a protected route', user: req.user });
   });
   router.get('/ownerviewbookings/:id',allBookings)
+  router.get('/ownerviewshop/:id',allshops)
  export default router

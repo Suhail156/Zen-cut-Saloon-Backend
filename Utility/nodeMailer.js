@@ -29,7 +29,7 @@ export const sendmail = async (data) => {
   });
 
   const mailOptions = {
-    from: process.env.EMAIL,
+    from: process.env.email,
     to: data.email,
     subject: data.subject,
     text: data.text,
