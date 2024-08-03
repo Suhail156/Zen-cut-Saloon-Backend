@@ -115,3 +115,36 @@ export const allshops = async (req, res) => {
   }
 };
   
+//shop owner edit shop 
+
+export const editShop = async (req, res) => {
+  const shopId = req.params.id;
+  console.log(shopId);
+  
+  try {
+    const { shopname, phone, email, location, category, startTime, endTime } = req.body;
+      console.log(req.body);
+      
+    const shopUpdate = await Shop.findByIdAndUpdate(
+      shopId,
+      {
+        $set: { shopname, phone, email, image: req.cloudinaryImageUrl, location, category, startTime, endTime }
+      },
+      { new: true } 
+    );
+    console.log(shopUpdate);
+    
+    if (shopUpdate) {
+      return res.status(200).json({
+        status: "success",
+        message: "Successfully updated the shop",
+        data: shopUpdate,
+      });
+    } else {
+      return res.status(404).json({ status: "error", message: "Shop not found" });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ status: "error", message: "Internal server error" });
+  }
+};
