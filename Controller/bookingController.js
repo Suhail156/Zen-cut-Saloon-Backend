@@ -41,12 +41,18 @@ export const bookingUser = async (req, res) => {
     await shop.save();
     await booking.save();
     await Owner.save()
+    const dates = new Date(date).toLocaleDateString("en-US", {
+      weekday: "short",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
 
     const userdata = {
         email: user.email,
         subject: "Your booking status",
         text: 'Your Appointment is confirmed ',
-        date:`${date}`,
+        date:`${dates}`,
         time:`${startTime}`
       };
       
@@ -55,7 +61,7 @@ export const bookingUser = async (req, res) => {
         email: Owner.email,
         subject: "Your booking status",
         text: 'a new appointment has been scheduled ',
-         date:`${date}`,
+         date:`${dates}`,
         time:`${startTime}`
       };
       

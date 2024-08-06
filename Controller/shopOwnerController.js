@@ -3,7 +3,6 @@ import shopOwner from "../Models/shopOwnerSchema.js"
 import ownerJoi from "../Validation/shopOwnerVAlidation.js"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import Booking from "../Models/bookingUserSchema.js"
 import Shop from "../Models/shopSchema.js"
 
 export const ownerSignup = async (req, res) => {
@@ -25,8 +24,8 @@ export const ownerSignup = async (req, res) => {
     const existingUser = await shopOwner.findOne({ email: email });
     if (existingUser) {
       return res.status(400).json({
-        status: "error",
-        message: "email already taken!"
+        status: "error",  
+        message: "email already taken!" 
       });
     }
 
@@ -76,6 +75,18 @@ export const ownerLogin=async(req,res)=>{
    } catch (error) {
     console.log(error);
    }
+}
+//view owner by id
+export const ownerById=async(req,res)=>{
+  const ownerId=req.params.id
+  
+  const owners=await shopOwner.findById(ownerId)
+  if(!owners){
+      return res.status(404).json({Error:"not found",message:"user not found"})
+  }
+  return res.status(200).json({status: "success", message: "user found", data: owners})
+
+
 }
 
 //shop owner view booking detailes
