@@ -56,6 +56,6 @@ const shopOwnerSchema = new mongoose.Schema({
       required:true
     },
   ]
-})
+});
 const shopOwner = mongoose.model("shopOwner", shopOwnerSchema);
 export default shopOwner;
