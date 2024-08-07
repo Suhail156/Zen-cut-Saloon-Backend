@@ -136,3 +136,38 @@ export const adminEditOwners=async(req,res)=>{
        console.log(error); 
     }
 }
+
+// view booking deatiles
+
+export const adminViewBooking=async(req,res)=>{
+
+    try {
+      const ownerId = req.params.id
+      const owner = await shopOwner.findById(ownerId)
+      .populate({
+        path:'booking',
+        populate:{path:'shopId'}
+      })
+      
+    if(owner.length===0){
+      return  res.status(404).json({message:"no bookings"})
+    }
+      return res.status(200).json({message:"successfully fetched",data:owner})
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  // admin shop view
+  export const adminViewShop = async (req, res) => {
+    const ownerId = req.params.id;
+    try {
+      const owner = await shopOwner.findById(ownerId).populate("shopId");
+      if (!owner) {
+        return res.status(404).json({ message: "Owner not found" });
+      }
+      res.status(200).json({ message: "Successfully fetched", data: owner });
+    } catch (error) {
+      console.error("Error fetching owner data:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  };

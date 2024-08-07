@@ -85,8 +85,7 @@ export const ownerById=async(req,res)=>{
       return res.status(404).json({Error:"not found",message:"user not found"})
   }
   return res.status(200).json({status: "success", message: "user found", data: owners})
-
-
+  
 }
 
 //shop owner view booking detailes
