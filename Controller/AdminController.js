@@ -118,7 +118,7 @@ export const adminEditOwners=async(req,res)=>{
         const updateOwners=await shopOwner.findByIdAndUpdate(ownerId,
             {$set:{username,shopname,phone,email,password,state,district,category}},
             {new:true}
-        )
+        ).populate("shopId");
         if(updateOwners){
             const updateOwners=await shopOwner.findById(ownerId)
             return res.status(200).json({
