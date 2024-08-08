@@ -170,6 +170,6 @@ export const editShop = async (req, res) => {
     console.log(error);
     return res.status(500).json({ status: "error", message: "An error occurred" });
   }
-};
+}
 
 
