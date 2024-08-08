@@ -85,7 +85,7 @@ export const ownerById=async(req,res)=>{
       return res.status(404).json({Error:"not found",message:"user not found"})
   }
   return res.status(200).json({status: "success", message: "user found", data: owners})
-  
+
 }
 
 //shop owner view booking detailes
@@ -128,33 +128,48 @@ export const allshops = async (req, res) => {
 //shop owner edit shop 
 
 export const editShop = async (req, res) => {
-  const shopId = req.params.id;
-  console.log(shopId);
-  
+  const ownerId = req.params.id;
   try {
     const { shopname, phone, email, location, category, startTime, endTime } = req.body;
-      console.log(req.body);
-      
-    const shopUpdate = await Shop.findByIdAndUpdate(
-      shopId,
-      {
-        $set: { shopname, phone, email, image: req.cloudinaryImageUrl, location, category, startTime, endTime }
-      },
-      { new: true } 
-    );
-    console.log(shopUpdate);
-    
-    if (shopUpdate) {
-      return res.status(200).json({
-        status: "success",
-        message: "Successfully updated the shop",
-        data: shopUpdate,
-      });
-    } else {
-      return res.status(404).json({ status: "error", message: "Shop not found" });
+
+    // Find the shopOwner to get the associated shopId(s)
+    const owner = await shopOwner.findById(ownerId).populate("shopId");
+
+    if (!owner) {
+      return res.status(404).json({ status: "error", message: "Owner not found" });
     }
+
+    // Update the associated Shop documents
+    if (owner.shopId && owner.shopId.length > 0) {
+      await Shop.updateMany(
+        { _id: { $in: owner.shopId } },
+        {
+          $set: {
+            shopname,
+            phone,
+            email,
+            location,
+            category,
+            startTime,
+            endTime,
+            image: req.cloudinaryImageUrl // Assuming this is part of the shop update
+          }
+        }
+      );
+    }
+
+    // Re-fetch and return the updated shops with populated owner
+    const updatedShops = await Shop.find({ _id: { $in: owner.shopId } });
+
+    return res.status(200).json({
+      status: "success",
+      message: "Successfully updated the shop details",
+      data: updatedShops,
+    });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ status: "error", message: "Internal server error" });
+    return res.status(500).json({ status: "error", message: "An error occurred" });
   }
 };
+
+
