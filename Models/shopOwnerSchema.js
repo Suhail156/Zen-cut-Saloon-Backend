@@ -49,13 +49,10 @@ const shopOwnerSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  shopId:[
-    {
+  shopId:[{
       type: mongoose.Schema.Types.ObjectId,
       ref: "Shop",
-      required:true
-    },
-  ]
+      required:true }]
 });
 const shopOwner = mongoose.model("shopOwner", shopOwnerSchema);
 export default shopOwner;

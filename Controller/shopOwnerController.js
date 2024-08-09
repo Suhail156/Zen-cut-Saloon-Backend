@@ -129,6 +129,8 @@ export const allshops = async (req, res) => {
 
 export const editShop = async (req, res) => {
   const ownerId = req.params.id;
+  console.log(ownerId);
+  
   try {
     const { shopname, phone, email, location, category, startTime, endTime } = req.body;
 
@@ -139,26 +141,23 @@ export const editShop = async (req, res) => {
       return res.status(404).json({ status: "error", message: "Owner not found" });
     }
 
-    // Update the associated Shop documents
     if (owner.shopId && owner.shopId.length > 0) {
       await Shop.updateMany(
         { _id: { $in: owner.shopId } },
         {
           $set: {
             shopname,
-            phone,
+            phone,  
             email,
             location,
             category,
-            startTime,
+            startTime,  
             endTime,
-            image: req.cloudinaryImageUrl // Assuming this is part of the shop update
+            image: req.cloudinaryImageUrl 
           }
         }
       );
     }
-
-    // Re-fetch and return the updated shops with populated owner
     const updatedShops = await Shop.find({ _id: { $in: owner.shopId } });
 
     return res.status(200).json({

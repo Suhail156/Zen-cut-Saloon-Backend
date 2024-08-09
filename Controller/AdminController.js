@@ -115,7 +115,39 @@ export const adminFetchById = async (req, res) => {
   }
 };
 // edit ownerDetailes
-
+export const adminEditOwner = async (req, res) => {
+    const ownerId = req.params.id;
+    const { username, shopname, phone, email } = req.body;
+  
+    try {
+      // Find and update the shop owner details
+      const updatedOwner = await shopOwner.findByIdAndUpdate(
+        ownerId,
+        { $set: { username, shopname, phone, email } },
+        { new: true }
+      );
+  
+      if (!updatedOwner) {
+        return res.status(404).json({
+          status: "error",
+          message: "Owner not found",
+        });
+      }
+  
+      return res.status(200).json({
+        status: "success",
+        message: "Successfully updated the owner details",
+        data: updatedOwner,
+      });
+    } catch (error) {
+      console.error("Error updating owner details:", error);
+      return res.status(500).json({
+        status: "error",
+        message: "An error occurred while updating owner details",
+      });
+    }
+  };
+  
 
 
 // view booking deatiles
@@ -152,3 +184,5 @@ export const adminViewShop = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+

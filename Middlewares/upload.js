@@ -1,6 +1,7 @@
-import multer from "multer";
-import { v2 as cloudinary } from "cloudinary";
-import dotenv from "dotenv";
+import multer from 'multer';
+import { v2 as cloudinary } from 'cloudinary';
+import dotenv from 'dotenv';
+
 dotenv.config();
 
 cloudinary.config({
@@ -14,7 +15,7 @@ const storage = multer.memoryStorage();
 const upload = multer({
     storage: storage,
     limits: {
-        fileSize: 1024 * 1024 * 10 
+        fileSize: 1024 * 1024 * 10 // 10 MB file size limit
     }
 }).single('image');
 
@@ -51,7 +52,7 @@ const uploadImage = (req, res, next) => {
             });
 
             req.cloudinaryImageUrl = result.secure_url;
-            console.log("Cloudinary Image URL:", req.cloudinaryImageUrl); 
+            console.log("Cloudinary Image URL:", req.cloudinaryImageUrl);
             next();
         } catch (error) {
             console.error("Cloudinary Error:", error);
