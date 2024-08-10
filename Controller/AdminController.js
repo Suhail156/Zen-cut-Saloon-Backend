@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import User from "../Models/userSchema.js";
 import shopOwner from "../Models/shopOwnerSchema.js";
 import Shop from "../Models/shopSchema.js";
+import Booking from "../Models/bookingUserSchema.js";
+import bookingStats from "../Models/totalBookingStates.js";
 dotenv.config();
 export const adminLogin = async (req, res) => {
   try {
@@ -186,3 +188,87 @@ export const adminViewShop = async (req, res) => {
 };
 
 
+// admin view total booking
+export const totalBooking = async (req, res) => {
+  try {
+    const book = await Booking.aggregate([
+      {
+        $count:"totalBookings"
+        }
+    ]);
+
+    if (book.length > 0) {
+      const {  totalBookings } = book[0];
+      const bookindeatiles = new bookingStats({
+        totalBookings 
+      });
+      await bookindeatiles.save();
+      res.status(200).json({ status: "Success", data: book[0] });
+    } else {
+      res.status(200).json({
+        status: "Success",
+        data: {totalBookings: 0 }
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ status: "Error", message: error.message });
+  }
+};
+
+export const allUsers = async (req, res) => {
+  try {
+    const [result] = await User.aggregate([
+      {
+        $count: "totalusers" 
+      }
+    ]);
+
+    if (result) {
+      const { totalusers } = result;
+      const usersDetails = new bookingStats({
+        totalusers,
+      });
+      await usersDetails.save();
+      
+      res.status(200).json({ status: "Success", data: result });
+    } else {
+      res.status(200).json({
+        status: "Success",
+        data: { totalusers: 0 }
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ status: "Error", message: error.message });
+  }
+}
+
+//all shopowners
+export const allowners = async (req, res) => {
+  try {
+    const [result] = await shopOwner.aggregate([
+      {
+        $count: "totalowners" 
+      }
+    ]);
+
+    if (result) {
+      const { totalowners } = result;
+      const usersDetails = new bookingStats({
+        totalowners,
+      });
+      await usersDetails.save();
+      
+      res.status(200).json({ status: "Success", data: result });
+    } else {
+      res.status(200).json({
+        status: "Success",
+        data: { totalowners: 0 }
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ status: "Error", message: error.message });
+  }
+}

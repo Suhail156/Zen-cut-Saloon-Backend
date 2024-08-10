@@ -32,7 +32,7 @@ const bookingUserSchema = new mongoose.Schema({
         type:String,
         required:true
     }
-});
+}); 
 
 const Booking = mongoose.model('Booking', bookingUserSchema); 
 export default Booking;
