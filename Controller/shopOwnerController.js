@@ -4,6 +4,7 @@ import ownerJoi from "../Validation/shopOwnerVAlidation.js"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import Shop from "../Models/shopSchema.js"
+import Booking from "../Models/bookingUserSchema.js"
 
 export const ownerSignup = async (req, res) => {
   const { value, error } = ownerJoi.validate(req.body);
@@ -172,3 +173,49 @@ export const editShop = async (req, res) => {
 }
 
 
+// total order view
+
+export const ownerViewOrders = async (req, res) => {
+  const ownerId = req.params.id;
+
+
+
+  try {
+    // Aggregate the total number of bookings for the owner
+    const bookings = await shopOwner.aggregate([
+      { $match: { _id: ownerId } }, // Match the owner by ID
+      {
+        $lookup: {
+          from: 'bookings', // The name of the bookings collection
+          localField: 'booking', // Field in shopOwner that references Booking
+          foreignField: '_id', // Field in Booking that matches the shopOwner booking
+          as: 'bookingDetails',
+        },
+      },
+      { $unwind: { path: '$bookingDetails', preserveNullAndEmptyArrays: true } }, // Unwind the bookingDetails array
+      {
+        $group: {
+          _id: null, // Group all documents into one
+          totalBookings: { $sum: 1 }, // Count the number of bookings
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          totalBookings: 1, // Project the totalBookings field
+        },
+      },
+    ]);
+
+    if (bookings.length === 0) {
+      return res.status(404).json({ message: 'No bookings found for this owner' });
+    }
+
+    console.log('Bookings:', bookings);
+
+    return res.status(200).json({ message: 'Success', data: bookings });
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};

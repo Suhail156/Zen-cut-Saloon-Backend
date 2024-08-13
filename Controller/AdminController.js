@@ -215,7 +215,7 @@ export const totalBooking = async (req, res) => {
     res.status(500).json({ status: "Error", message: error.message });
   }
 };
-
+//view all users
 export const allUsers = async (req, res) => {
   try {
     const [result] = await User.aggregate([
@@ -272,3 +272,43 @@ export const allowners = async (req, res) => {
     res.status(500).json({ status: "Error", message: error.message });
   }
 }
+
+
+// chart stats
+
+export const totalBookings = async (req, res) => {
+  try {
+    const bookingsByMonth = await Booking.aggregate([
+      {
+        $addFields: {
+          dateAsDate: { $dateFromString: { dateString: "$date" } } // Convert string to date
+        }
+      },
+      {
+        $group: {
+          _id: { $month: "$dateAsDate" }, // Use the converted date
+          totalBookings: { $sum: 1 }
+        }
+      },
+      {
+        $sort: { "_id": 1 }
+      },
+      {
+        $project: {
+          _id: 0,
+          month: "$_id",
+          totalBookings: 1
+        }
+      }
+    ]);
+    
+
+    res.status(200).json({
+      status: "Success",
+      data: bookingsByMonth
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ status: "Error", message: error.message });
+  }
+};

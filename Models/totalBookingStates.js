@@ -10,7 +10,7 @@ const bookingStatsSchema= new mongoose.Schema({
     },
     totalBookings:{
         type:Number
-    }
+    },
 })
 const bookingStats=mongoose.model("bookingStats",bookingStatsSchema)
 export default bookingStats

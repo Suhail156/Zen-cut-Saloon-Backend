@@ -6,7 +6,7 @@
     <title>Email Notification</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
@@ -17,58 +17,86 @@
             margin: 0 auto;
             padding: 20px;
             background-color: #ffffff;
-            box-shadow: 0 0 10px rgba(212, 207, 207, 0.1);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
         }
         .header {
             text-align: center;
             padding: 20px;
-            background-color: #618e99;
-            color: #000000;
+            background-color: #007bff;
+            color: #ffffff;
+            border-radius: 8px 8px 0 0;
         }
         .header img {
             max-width: 150px;
         }
         .content {
             padding: 20px;
-            text-align: center;
+            text-align: left;
         }
         .content h2 {
             color: #333333;
+            font-size: 24px;
         }
         .content p {
             color: #555555;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        .content h3 {
+            color: #007bff;
+            font-size: 20px;
         }
         .footer {
             text-align: center;
-            padding: 10px;
-            font-size: 12px;
+            padding: 15px;
+            font-size: 14px;
             color: #777777;
             background-color: #f1f1f1;
-            margin-top: 20px;
+            border-radius: 0 0 8px 8px;
+        }
+        .footer p {
+            margin: 5px 0;
         }
         .footer a {
             color: #007bff;
             text-decoration: none;
         }
+        .social-media {
+            margin-top: 10px;
+        }
+        .social-media a {
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        .social-media img {
+            width: 24px;
+            height: 24px;
+        }
     </style>
 </head>
 <body>
-    <div class="container ">
+    <div class="container">
         <div class="header">
-            <!-- <img src="https://example.com/logo.svg" alt="Your Company Logo"> -->
+            <img src="image/svg+xml" href="https://marketplace.canva.com/EAF6DOq8wwA/1/0/1600w/canva-black-and-white-modern-illustrative-barbershop-logo-MnTa2CvxlTE.jpg" alt="Your Company Logo">
             <h1>Zen Cut</h1>
         </div>
         <div class="content">
             <h2>Hello {{from}},</h2>
             <p>{{text}}</p>
-            <h3>Appointment Detailes</h3>
-             <p>Date: {{date}}</p>
-             <p>Time: {{time}}</p>
+            <h3>Appointment Details</h3>
+            <p>Date: {{date}}</p>
+            <p>Time: {{time}}</p>
             <p>If you have any questions, feel free to reach out to us.</p>
         </div>
         <div class="footer">
             <p>Thank you for choosing us!</p>
             <p>For further assistance, contact us at <a href="mailto:yourcompanyemail@example.com">yourcompanyemail@example.com</a></p>
+            <div class="social-media">
+                <a href="https://facebook.com/yourcompany"><img src="https://example.com/facebook-icon.png" alt="Facebook"></a>
+                <a href="https://twitter.com/yourcompany"><img src="https://example.com/twitter-icon.png" alt="Twitter"></a>
+                <a href="https://instagram.com/yourcompany"><img src="https://example.com/instagram-icon.png" alt="Instagram"></a>
+            </div>
         </div>
     </div>
 </body>

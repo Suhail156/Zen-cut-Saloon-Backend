@@ -1,5 +1,5 @@
 import express from 'express'
-import { adminApproveReject, adminBlock, adminEditOwner, adminFetchById, adminFetchShopOwners, adminFetchUser, adminLogin, adminViewBooking, adminViewShop, allowners, allUsers, totalBooking } from '../Controller/AdminController.js'
+import { adminApproveReject, adminBlock, adminEditOwner, adminFetchById, adminFetchShopOwners, adminFetchUser, adminLogin, adminViewBooking, adminViewShop, allowners, allUsers, totalBooking, totalBookings } from '../Controller/AdminController.js'
 const router=express.Router()
 
 router.post('/adminlogin',adminLogin)
@@ -18,4 +18,5 @@ router.get('/adminviewshop/:id',adminViewShop)
 router.get('/adminviewdetailes',totalBooking)
 router.get('/adminviewallusers',allUsers)
 router.get('/adminviewallowners',allowners)
+router.get('/adminviewchart',totalBookings)
 export default router       
