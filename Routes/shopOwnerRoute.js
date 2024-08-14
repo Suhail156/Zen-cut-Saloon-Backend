@@ -1,18 +1,18 @@
 import express from 'express'
-import { allBookings, allshops, editShop, ownerById, ownerLogin, ownerSignup, ownerViewOrders } from '../Controller/shopOwnerController.js'
+import { allBookings, allshops, editOwner, editShop, ownerById, ownerLogin, ownerSignup } from '../Controller/shopOwnerController.js'
 import { ownertoken } from '../Middlewares/OwnerMiddleware.js'
 import uploadImage from '../Middlewares/upload.js'
 
 const router=express.Router()
 
- router.post('/ownersignup',ownerSignup)
- router.post('/ownerlogin',ownerLogin)
- router.get('/ownerviewbyid/:id',ownerById)
- router.get('/ownerviewbookings/:id',allBookings)
-  router.get('/ownerviewshop/:id',allshops)
-  router.patch('/ownereditshop/:id',uploadImage,editShop)
-  router.get('/shopownervieworders/:id',ownerViewOrders)
-
+router.post('/ownersignup',ownerSignup)
+router.post('/ownerlogin',ownerLogin)
+router.get('/ownerviewbyid/:id',ownerById)
+router.get('/ownerviewbookings/:id',allBookings)
+router.get('/ownerviewshop/:id',allshops)
+router.patch('/ownereditshop/:id',uploadImage,editShop)
+router.patch('/owneredit/:id',editOwner)
+router.use(ownertoken)
 
 
 

@@ -1,11 +1,11 @@
 import express from 'express'
 import { adminApproveReject, adminBlock, adminEditOwner, adminFetchById, adminFetchShopOwners, adminFetchUser, adminLogin, adminViewBooking, adminViewShop, allowners, allUsers, totalBooking, totalBookings } from '../Controller/AdminController.js'
+import { adminToken } from '../Middlewares/adminMiddleware.js'
 const router=express.Router()
-
 router.post('/adminlogin',adminLogin)
 
 //users
-router.get('/adminuserview',adminFetchUser)
+router.get('/adminuserview',adminFetchUser) 
 router.patch('/adminblock/:id',adminBlock)
 
 //shopOwners
@@ -19,4 +19,5 @@ router.get('/adminviewdetailes',totalBooking)
 router.get('/adminviewallusers',allUsers)
 router.get('/adminviewallowners',allowners)
 router.get('/adminviewchart',totalBookings)
+router.use(adminToken)
 export default router       

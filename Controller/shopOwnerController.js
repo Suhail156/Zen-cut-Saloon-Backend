@@ -172,50 +172,40 @@ export const editShop = async (req, res) => {
   }
 }
 
+// edit shop owner
 
-// total order view
-
-export const ownerViewOrders = async (req, res) => {
-  const ownerId = req.params.id;
-
-
-
-  try {
-    // Aggregate the total number of bookings for the owner
-    const bookings = await shopOwner.aggregate([
-      { $match: { _id: ownerId } }, // Match the owner by ID
-      {
-        $lookup: {
-          from: 'bookings', // The name of the bookings collection
-          localField: 'booking', // Field in shopOwner that references Booking
-          foreignField: '_id', // Field in Booking that matches the shopOwner booking
-          as: 'bookingDetails',
-        },
-      },
-      { $unwind: { path: '$bookingDetails', preserveNullAndEmptyArrays: true } }, // Unwind the bookingDetails array
-      {
-        $group: {
-          _id: null, // Group all documents into one
-          totalBookings: { $sum: 1 }, // Count the number of bookings
-        },
-      },
-      {
-        $project: {
-          _id: 0,
-          totalBookings: 1, // Project the totalBookings field
-        },
-      },
-    ]);
-
-    if (bookings.length === 0) {
-      return res.status(404).json({ message: 'No bookings found for this owner' });
+export const editOwner = async (req, res) => {
+    const ownerId = req.params.id;
+    console.log("Owner ID:", ownerId);
+  
+    const { username, shopname, phone, email } = req.body;
+    console.log("Request Body:", req.body);
+    
+    try {
+        const owner = await shopOwner.findByIdAndUpdate(
+            ownerId,
+            { $set: { username, shopname, phone, email } },
+            { new: true }
+        );
+        
+        if (!owner) {
+            return res.status(404).json({
+                status: "error",
+                message: "Owner not found"
+            });
+        }
+        
+        return res.status(200).json({
+            status: "success",
+            message: "Successfully updated",
+            data: owner
+        });
+    } catch (error) {
+        console.error("Error updating owner:", error);
+        return res.status(500).json({
+            status: "error",
+            message: "Failed to update owner"
+        });
     }
-
-    console.log('Bookings:', bookings);
-
-    return res.status(200).json({ message: 'Success', data: bookings });
-  } catch (error) {
-    console.error('Error:', error);
-    return res.status(500).json({ message: 'Internal server error' });
-  }
 };
+

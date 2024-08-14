@@ -128,3 +128,22 @@ export const UserViewById=async(req,res)=>{
    }
    
 }
+//user edit profile
+
+export const editUser=async(req,res)=>{
+  const userId=req.params.id
+  const{username,phone,email}=req.body
+  try {
+    const users=await User.findByIdAndUpdate(userId,
+      {$set:{username,phone,email}},
+      {new:true}
+    )
+    if(!users){
+      return res.status(404).json({message:"user not found"})
+    }
+    return res.status(200).json({status:'Success',message:"Successfully Updated",data:users})
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
