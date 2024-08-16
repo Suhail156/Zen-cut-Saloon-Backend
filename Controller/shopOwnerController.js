@@ -1,21 +1,30 @@
-import mongoose from "mongoose"
-import shopOwner from "../Models/shopOwnerSchema.js"
-import ownerJoi from "../Validation/shopOwnerVAlidation.js"
-import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
-import Shop from "../Models/shopSchema.js"
-import Booking from "../Models/bookingUserSchema.js"
+import mongoose from "mongoose";
+import shopOwner from "../Models/shopOwnerSchema.js";
+import ownerJoi from "../Validation/shopOwnerVAlidation.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import Shop from "../Models/shopSchema.js";
+import Booking from "../Models/bookingUserSchema.js";
 
 export const ownerSignup = async (req, res) => {
   const { value, error } = ownerJoi.validate(req.body);
   if (error) {
     return res.status(400).json({
       status: "error",
-      message: error.details[0].message
+      message: error.details[0].message,
     });
   }
   console.log(error);
-  const { username, shopname, email, password, category, phone ,district,state} = value;
+  const {
+    username,
+    shopname,
+    email,
+    password,
+    category,
+    phone,
+    district,
+    state,
+  } = value;
 
   try {
     // hashed password
@@ -25,8 +34,8 @@ export const ownerSignup = async (req, res) => {
     const existingUser = await shopOwner.findOne({ email: email });
     if (existingUser) {
       return res.status(400).json({
-        status: "error",  
-        message: "email already taken!" 
+        status: "error",
+        message: "email already taken!",
       });
     }
 
@@ -37,78 +46,83 @@ export const ownerSignup = async (req, res) => {
       password: hashedPassword,
       category: category,
       phone: phone,
-      district:district,
-      state:state
+      district: district,
+      state: state,
     });
     await newOwner.save();
     return res.status(201).json({
       status: "success",
       message: "User registered successfully",
-      data: newOwner
+      data: newOwner,
     });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       status: "error",
-      message: "Internal Server Error"
+      message: "Internal Server Error",
     });
   }
 };
 
-
-
-
-export const ownerLogin=async(req,res)=>{
-   try {
-    const{email,password}=req.body
-    const uservalid=await shopOwner.findOne({email})
-    if(!uservalid){
-      return res.status(404).json({error:"user not found"})
+export const ownerLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const uservalid = await shopOwner.findOne({ email });
+    if (!uservalid) {
+      return res.status(404).json({ error: "user not found" });
     }
-    const validpassword=bcrypt.compareSync(password,uservalid.password)
-    if(!validpassword){
-      return res.status(404).json({error:"wrong credentials"})
+    const validpassword = bcrypt.compareSync(password, uservalid.password);
+    if (!validpassword) {
+      return res.status(404).json({ error: "wrong credentials" });
     }
-    const token = jwt.sign({ id: uservalid._id }, process.env.OWNER_SECRET_TOKEN);
+    const token = jwt.sign(
+      { id: uservalid._id },
+      process.env.OWNER_SECRET_TOKEN
+    );
     const { password: hashedPassword, ...rest } = uservalid._doc;
     res.cookie("access_token", token, { httpOnly: true });
-       return res.status(200).json({ message: 'successfully logged in', data: { ...rest, token } });
-   } catch (error) {
+    return res
+      .status(200)
+      .json({ message: "successfully logged in", data: { ...rest, token } });
+  } catch (error) {
     console.log(error);
-   }
-}
-//view owner by id
-export const ownerById=async(req,res)=>{
-  const ownerId=req.params.id
-  
-  const owners=await shopOwner.findById(ownerId)
-  if(!owners){
-      return res.status(404).json({Error:"not found",message:"user not found"})
   }
-  return res.status(200).json({status: "success", message: "user found", data: owners})
+};
+//view owner by id
+export const ownerById = async (req, res) => {
+  const ownerId = req.params.id;
 
-}
+  const owners = await shopOwner.findById(ownerId);
+  if (!owners) {
+    return res
+      .status(404)
+      .json({ Error: "not found", message: "user not found" });
+  }
+  return res
+    .status(200)
+    .json({ status: "success", message: "user found", data: owners });
+};
 
 //shop owner view booking detailes
-  
-export const allBookings=async(req,res)=>{
 
+export const allBookings = async (req, res) => {
   try {
-    const ownerId = req.params.id
-    const owner = await shopOwner.findById(ownerId)
-    .populate({
-      path:'booking',
-      populate:{path:'shopId'}
-    })
-    
-  if(owner.length===0){
-    return  res.status(404).json({message:"no bookings"})
-  }
-    return res.status(200).json({message:"successfully fetched",data:owner})
+    const ownerId = req.params.id;
+    const owner = await shopOwner.findById(ownerId).populate({
+      path: "booking",
+      populate: { path: "shopId" },
+    });
+
+    if (owner.length === 0) {
+      return res.status(404).json({ message: "no bookings" });
+    }
+    return res
+      .status(200)
+      .json({ message: "successfully fetched", data: owner });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
 //shop owner view shop deatiles
 
@@ -125,21 +139,22 @@ export const allshops = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-  
-//shop owner edit shop 
+
+//shop owner edit shop
 
 export const editShop = async (req, res) => {
   const ownerId = req.params.id;
   console.log(ownerId);
-  
-  try {
-    const { shopname, phone, email, location, category, startTime, endTime } = req.body;
 
-    // Find the shopOwner to get the associated shopId(s)
+  try {
+    const { shopname, phone, email, location, category, startTime, endTime } =
+      req.body;
     const owner = await shopOwner.findById(ownerId).populate("shopId");
 
     if (!owner) {
-      return res.status(404).json({ status: "error", message: "Owner not found" });
+      return res
+        .status(404)
+        .json({ status: "error", message: "Owner not found" });
     }
 
     if (owner.shopId && owner.shopId.length > 0) {
@@ -148,14 +163,14 @@ export const editShop = async (req, res) => {
         {
           $set: {
             shopname,
-            phone,  
+            phone,
             email,
             location,
             category,
-            startTime,  
+            startTime,
             endTime,
-            image: req.cloudinaryImageUrl 
-          }
+            image: req.cloudinaryImageUrl,
+          },
         }
       );
     }
@@ -168,44 +183,45 @@ export const editShop = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ status: "error", message: "An error occurred" });
+    return res
+      .status(500)
+      .json({ status: "error", message: "An error occurred" });
   }
-}
+};
 
 // edit shop owner
 
 export const editOwner = async (req, res) => {
-    const ownerId = req.params.id;
-    console.log("Owner ID:", ownerId);
-  
-    const { username, shopname, phone, email } = req.body;
-    console.log("Request Body:", req.body);
-    
-    try {
-        const owner = await shopOwner.findByIdAndUpdate(
-            ownerId,
-            { $set: { username, shopname, phone, email } },
-            { new: true }
-        );
-        
-        if (!owner) {
-            return res.status(404).json({
-                status: "error",
-                message: "Owner not found"
-            });
-        }
-        
-        return res.status(200).json({
-            status: "success",
-            message: "Successfully updated",
-            data: owner
-        });
-    } catch (error) {
-        console.error("Error updating owner:", error);
-        return res.status(500).json({
-            status: "error",
-            message: "Failed to update owner"
-        });
-    }
-};
+  const ownerId = req.params.id;
+  console.log("Owner ID:", ownerId);
 
+  const { username, shopname, phone, email } = req.body;
+  console.log("Request Body:", req.body);
+
+  try {
+    const owner = await shopOwner.findByIdAndUpdate(
+      ownerId,
+      { $set: { username, shopname, phone, email } },
+      { new: true }
+    );
+
+    if (!owner) {
+      return res.status(404).json({
+        status: "error",
+        message: "Owner not found",
+      });
+    }
+
+    return res.status(200).json({
+      status: "success",
+      message: "Successfully updated",
+      data: owner,
+    });
+  } catch (error) {
+    console.error("Error updating owner:", error);
+    return res.status(500).json({
+      status: "error",
+      message: "Failed to update owner",
+    });
+  }
+};

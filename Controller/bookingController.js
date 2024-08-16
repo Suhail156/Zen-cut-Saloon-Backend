@@ -33,16 +33,18 @@ export const bookingUser = async (req, res) => {
     }
 
     const currentDate = new Date();
-    const formattedDate = currentDate.toISOString().split('T')[0];
+    const formattedDate = currentDate.toISOString().split("T")[0];
     console.log(formattedDate);
 
     const existingBooking = await Booking.findOne({
       shopId,
       date: formattedDate,
-      startTime
+      startTime,
     });
     if (existingBooking) {
-      return res.status(400).json({ message: "Booking already exists for this time and date" });
+      return res
+        .status(400)
+        .json({ message: "Booking already exists for this time and date" });
     }
 
     const booking = new Booking({
@@ -66,17 +68,17 @@ export const bookingUser = async (req, res) => {
     const userNotification = {
       email: user.email,
       subject: "Your booking status",
-      text: 'Your appointment is confirmed.',
+      text: "Your appointment is confirmed.",
       date: formattedDate,
-      time: startTime
+      time: startTime,
     };
 
     const ownerNotification = {
       email: owner.email,
       subject: "New booking scheduled",
-      text: 'A new appointment has been scheduled.',
+      text: "A new appointment has been scheduled.",
       date: formattedDate,
-      time: startTime
+      time: startTime,
     };
 
     await sendmail(userNotification);
@@ -86,49 +88,53 @@ export const bookingUser = async (req, res) => {
       status: "success",
       message: "Booking successfully completed",
       data: booking,
-      formattedDate 
+      formattedDate,
     });
-
   } catch (error) {
-    console.error('Error processing booking:', error);
-    return res.status(500).json({ message: "Internal server error", error: error.message });
+    console.error("Error processing booking:", error);
+    return res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
   }
 };
-
 
 export const checkAvailability = async (req, res) => {
   try {
     const { shopId, date, startTime } = req.query;
     console.log(req.query);
-    
 
     if (!shopId || !date || !startTime) {
-      return res.status(400).json({ error: 'Missing required parameters (shopId, date, or startTime)' });
+      return res
+        .status(400)
+        .json({
+          error: "Missing required parameters (shopId, date, or startTime)",
+        });
     }
 
     if (!mongoose.Types.ObjectId.isValid(shopId)) {
-      return res.status(400).json({ error: 'Invalid shopId format' });
+      return res.status(400).json({ error: "Invalid shopId format" });
     }
 
     const shopObjectId = new mongoose.Types.ObjectId(shopId);
 
-
     const bookings = await Booking.find({
       shopId: shopObjectId,
       date: date,
-      startTime:startTime
+      startTime: startTime,
     }).exec();
 
     if (bookings.length > 0) {
-      return res.status(400).json({ message: 'Slot already booked for this date and time' });
+      return res
+        .status(400)
+        .json({ message: "Slot already booked for this date and time" });
     }
 
     res.status(200).json({
-      message: 'Slot is available for booking',
-      date 
+      message: "Slot is available for booking",
+      date,
     });
   } catch (error) {
-    console.error('Error checking availability:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error checking availability:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };

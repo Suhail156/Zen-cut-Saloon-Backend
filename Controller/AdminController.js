@@ -118,39 +118,37 @@ export const adminFetchById = async (req, res) => {
 };
 // edit ownerDetailes
 export const adminEditOwner = async (req, res) => {
-    const ownerId = req.params.id;
-    const { username, shopname, phone, email } = req.body;
-  
-    try {
-      // Find and update the shop owner details
-      const updatedOwner = await shopOwner.findByIdAndUpdate(
-        ownerId,
-        { $set: { username, shopname, phone, email } },
-        { new: true }
-      );
-  
-      if (!updatedOwner) {
-        return res.status(404).json({
-          status: "error",
-          message: "Owner not found",
-        });
-      }
-  
-      return res.status(200).json({
-        status: "success",
-        message: "Successfully updated the owner details",
-        data: updatedOwner,
-      });
-    } catch (error) {
-      console.error("Error updating owner details:", error);
-      return res.status(500).json({
+  const ownerId = req.params.id;
+  const { username, shopname, phone, email } = req.body;
+
+  try {
+    // Find and update the shop owner details
+    const updatedOwner = await shopOwner.findByIdAndUpdate(
+      ownerId,
+      { $set: { username, shopname, phone, email } },
+      { new: true }
+    );
+
+    if (!updatedOwner) {
+      return res.status(404).json({
         status: "error",
-        message: "An error occurred while updating owner details",
+        message: "Owner not found",
       });
     }
-  };
-  
 
+    return res.status(200).json({
+      status: "success",
+      message: "Successfully updated the owner details",
+      data: updatedOwner,
+    });
+  } catch (error) {
+    console.error("Error updating owner details:", error);
+    return res.status(500).json({
+      status: "error",
+      message: "An error occurred while updating owner details",
+    });
+  }
+};
 
 // view booking deatiles
 
@@ -187,27 +185,26 @@ export const adminViewShop = async (req, res) => {
   }
 };
 
-
 // admin view total booking
 export const totalBooking = async (req, res) => {
   try {
     const book = await Booking.aggregate([
       {
-        $count:"totalBookings"
-        }
+        $count: "totalBookings",
+      },
     ]);
 
     if (book.length > 0) {
-      const {  totalBookings } = book[0];
+      const { totalBookings } = book[0];
       const bookindeatiles = new bookingStats({
-        totalBookings 
+        totalBookings,
       });
       await bookindeatiles.save();
       res.status(200).json({ status: "Success", data: book[0] });
     } else {
       res.status(200).json({
         status: "Success",
-        data: {totalBookings: 0 }
+        data: { totalBookings: 0 },
       });
     }
   } catch (error) {
@@ -220,8 +217,8 @@ export const allUsers = async (req, res) => {
   try {
     const [result] = await User.aggregate([
       {
-        $count: "totalusers" 
-      }
+        $count: "totalusers",
+      },
     ]);
 
     if (result) {
@@ -230,27 +227,27 @@ export const allUsers = async (req, res) => {
         totalusers,
       });
       await usersDetails.save();
-      
+
       res.status(200).json({ status: "Success", data: result });
     } else {
       res.status(200).json({
         status: "Success",
-        data: { totalusers: 0 }
+        data: { totalusers: 0 },
       });
     }
   } catch (error) {
     console.log(error);
     res.status(500).json({ status: "Error", message: error.message });
   }
-}
+};
 
 //all shopowners
 export const allowners = async (req, res) => {
   try {
     const [result] = await shopOwner.aggregate([
       {
-        $count: "totalowners" 
-      }
+        $count: "totalowners",
+      },
     ]);
 
     if (result) {
@@ -259,20 +256,19 @@ export const allowners = async (req, res) => {
         totalowners,
       });
       await usersDetails.save();
-      
+
       res.status(200).json({ status: "Success", data: result });
     } else {
       res.status(200).json({
         status: "Success",
-        data: { totalowners: 0 }
+        data: { totalowners: 0 },
       });
     }
   } catch (error) {
     console.log(error);
     res.status(500).json({ status: "Error", message: error.message });
   }
-}
-
+};
 
 // chart stats
 
@@ -281,31 +277,30 @@ export const totalBookings = async (req, res) => {
     const bookingsByMonth = await Booking.aggregate([
       {
         $addFields: {
-          dateAsDate: { $dateFromString: { dateString: "$date" } } // Convert string to date
-        }
+          dateAsDate: { $dateFromString: { dateString: "$date" } },
+        },
       },
       {
         $group: {
-          _id: { $month: "$dateAsDate" }, // Use the converted date
-          totalBookings: { $sum: 1 }
-        }
+          _id: { $month: "$dateAsDate" }, 
+          totalBookings: { $sum: 1 },
+        },
       },
       {
-        $sort: { "_id": 1 }
+        $sort: { _id: 1 },
       },
       {
         $project: {
           _id: 0,
           month: "$_id",
-          totalBookings: 1
-        }
-      }
+          totalBookings: 1,
+        },
+      },
     ]);
-    
 
     res.status(200).json({
       status: "Success",
-      data: bookingsByMonth
+      data: bookingsByMonth,
     });
   } catch (error) {
     console.log(error);
