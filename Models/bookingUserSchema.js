@@ -18,7 +18,6 @@ const bookingUserSchema = new mongoose.Schema({
   OwnerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "shopOwner",
-    // required: true
   },
   phone: {
     type: String,
@@ -31,6 +30,10 @@ const bookingUserSchema = new mongoose.Schema({
   date: {
     type: String,
     required: true
+  },
+  status:{
+    type:String,
+    default:"pending"
   }
 });
 

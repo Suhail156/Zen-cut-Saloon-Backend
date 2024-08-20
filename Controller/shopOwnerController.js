@@ -5,6 +5,8 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Shop from "../Models/shopSchema.js";
 import Booking from "../Models/bookingUserSchema.js";
+import { sendmail } from "../Utility/nodeMailer.js";
+import User from "../Models/userSchema.js";
 
 export const ownerSignup = async (req, res) => {
   const { value, error } = ownerJoi.validate(req.body);
@@ -225,3 +227,78 @@ export const editOwner = async (req, res) => {
     });
   }
 };
+// pending
+export const BookingPending = async (req, res) => {
+  const ownerId = req.params.id;
+
+  try {
+    const shop = await Shop.findOne({ ownerId }).populate("booking");
+
+    if (!shop) {
+      return res.status(404).json({ message: "No shop found for this owner" });
+    }
+    const pendingBookings = shop.booking.filter((data) => data.status == "pending");
+
+    if (!pendingBookings || pendingBookings.length === 0) {
+      return res.status(404).json({ message: "No pending bookings found" });
+    }
+    return res.status(200).json({ message: "Success", data: pendingBookings });
+  } catch (error) {
+    console.log("Error:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+//  a=shop owner accept 
+
+export const bookingApprove=async(req,res)=>{
+    const bookingId=req.params.id
+    try {
+      const bookings=await Booking.findById(bookingId)
+      if(!bookings){
+        return res.status(404).json({message:"no bookings"})
+      }
+      const user=await User.findById(bookings.userId)
+      
+      bookings.status="accept"
+      await bookings.save()
+      const userNotification = {
+        email: user.email,
+        subject: "Your booking status",
+        text: "Your appointment is approved, please arrive on correct time",
+        date: bookings.date,
+        time: bookings.startTime,
+      };
+     await sendmail(userNotification)
+     return res.status(200).json({message:"suucessfully accepted",data:bookings})
+    } catch (error) {
+      console.log(error);
+      
+    }
+}
+//owner reject bookings
+
+ export const bookingReject=async(req,res)=>{
+    const bookingId=req.params.id
+    try {
+      const bookings=await Booking.findById(bookingId)
+      const user=await User.findById(bookings.userId)
+       if(!bookings){
+        return res.status(404).json({message:"booking not found"})
+       }
+       bookings.status="reject"
+       await bookings.save()
+       const userNotification = {
+        email: user.email,
+        subject: "Your booking status",
+        text: "Your appointment is Rejected, Sorry",
+        date: bookings.date,
+        time: bookings.startTime,
+      };
+     await sendmail(userNotification)
+       return res.status(200).json({message:"Booking rejected",data:bookings})
+    } catch (error) {
+      console.log(error);
+      
+    }
+ }  
