@@ -11,9 +11,9 @@ export const bookingUser = async (req, res) => {
   const ownerId = req.params.ownerid;
 
   try {
-    const { startTime, username, phone } = req.body;
+    const { startTime, username, phone, date } = req.body;
 
-    if (!startTime || !username || !phone) {
+    if (!startTime || !username || !phone || !date) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
@@ -32,15 +32,16 @@ export const bookingUser = async (req, res) => {
       return res.status(404).json({ message: "Owner not found" });
     }
 
-    const currentDate = new Date();
-    const formattedDate = currentDate.toISOString().split("T")[0];
-    console.log(formattedDate);
+    const bookingDate = new Date(date);
+    bookingDate.setHours(bookingDate.getHours() + 6);
+    const formattedDate = bookingDate.toISOString().split("T")[0];
 
     const existingBooking = await Booking.findOne({
       shopId,
       date: formattedDate,
       startTime,
     });
+
     if (existingBooking) {
       return res
         .status(400)
@@ -98,10 +99,11 @@ export const bookingUser = async (req, res) => {
   }
 };
 
+
+// check availability
 export const checkAvailability = async (req, res) => {
   try {
     const { shopId, date, startTime } = req.query;
-    console.log(req.query);
 
     if (!shopId || !date || !startTime) {
       return res

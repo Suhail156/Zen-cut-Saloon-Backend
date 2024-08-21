@@ -4,6 +4,7 @@ import userjoi from "../Validation/userJoivalidation.js";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
+import Booking from "../Models/bookingUserSchema.js";
 const otpStore = new Map();
 dotenv.config()
 
@@ -142,6 +143,27 @@ export const editUser=async(req,res)=>{
       return res.status(404).json({message:"user not found"})
     }
     return res.status(200).json({status:'Success',message:"Successfully Updated",data:users})
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
+// user view booking deatiles
+
+export const userViewBooking=async(req,res)=>{
+   const userId=req.params.id
+  try {
+    const bookings=await User.findById(userId).
+    populate({
+      path:"booking",
+      populate:{path:"shopId"}
+    })
+ 
+    
+    if (bookings.length === 0) {
+      return res.status(404).json({ message: "no bookings" });
+    }
+     return res.status(200).json({message:"successfully get booking details",data:bookings})
   } catch (error) {
     console.log(error);
     
