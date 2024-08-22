@@ -16,7 +16,7 @@ const app=express()
 //   }));
   
 app.use(cors({
-    origin: 'https://zen-cut-saloon-backend.onrender.com',
+    origin: 'https://zen-cut-saloon-frontend-qzug-20631t53s.vercel.app/',
     methods: ['GET', 'POST', 'PUT', 'DELETE','PUT'],
     credentials: true,
   }));
