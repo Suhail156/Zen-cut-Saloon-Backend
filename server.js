@@ -15,9 +15,21 @@ const app=express()
 //     // origin:"http://localhost:5173"
 //   }));
   
-app.use(cors({
-    origin: 'https://zen-cut-saloon-frontend-qzug-20631t53s.vercel.app/',
-    methods: ['GET', 'POST', 'PUT', 'DELETE','PUT'],
+const allowedOrigins = [
+    'https://zen-cut-saloon-frontend-qzug-343y4okr3.vercel.app', // The current domain
+    'https://zen-cut-saloon-frontend-qzug-20631t53s.vercel.app', // The other domain
+    // Add more domains as needed
+  ];
+  
+  app.use(cors({
+    origin: function (origin, callback) {
+      if (allowedOrigins.includes(origin) || !origin) { // Allow requests with no origin (like from Postman)
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   }));
 mongoose.connect(process.env.db)
