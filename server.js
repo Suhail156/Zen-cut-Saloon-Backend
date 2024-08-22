@@ -11,7 +11,11 @@ import bookingrouter from './Routes/bookingUser.js'
  dotenv.config()
 const app=express()
  
-app.use(cors())
+app.use(cors({
+         // origin:"http://localhost:5173"
+    origin:"https://https://zen-cut-saloon-frontend-qzug.vercel.app/",
+    credentials:true
+}))
 mongoose.connect(process.env.db)
 .then(()=>console.log('db connected'))
 .catch(error =>console.log(error))
