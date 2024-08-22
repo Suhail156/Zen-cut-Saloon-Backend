@@ -16,11 +16,8 @@ const app=express()
 //   }));
   
 app.use(cors({
-    origin: [
-      'https://zen-cut-saloon-frontend-qzug-4mv3l6ih5.vercel.app',
-      'https://zen-cut-saloon-frontend-qzug.vercel.app'
-    ],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    origin: 'https://zen-cut-saloon-backend.onrender.com',
+    methods: ['GET', 'POST', 'PUT', 'DELETE','PUT'],
     credentials: true,
   }));
 mongoose.connect(process.env.db)
