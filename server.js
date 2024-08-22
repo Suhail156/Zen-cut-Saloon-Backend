@@ -11,11 +11,18 @@ import bookingrouter from './Routes/bookingUser.js'
  dotenv.config()
 const app=express()
  
-app.use(cors({
-    // origin:"http://localhost:5173"
-    origin: 'https://zen-cut-saloon-frontend-qzug.vercel.app'
-  }));
+// app.use(cors({
+//     // origin:"http://localhost:5173"
+//   }));
   
+app.use(cors({
+    origin: [
+      'https://zen-cut-saloon-frontend-qzug-4mv3l6ih5.vercel.app',
+      'https://zen-cut-saloon-frontend-qzug.vercel.app'
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+  }));
 mongoose.connect(process.env.db)
 .then(()=>console.log('db connected'))
 .catch(error =>console.log(error))
