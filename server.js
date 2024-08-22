@@ -12,21 +12,17 @@ import bookingrouter from './Routes/bookingUser.js';
 dotenv.config();
 const app = express();
 
-// Uncomment and configure CORS if running locally
-// app.use(cors({
-//     // origin: "http://localhost:5173"
-// }));
-
 // Allowed origins
 const allowedOrigins = [
-    'https://zen-cut-saloon-frontend-qzug-343y4okr3.vercel.app', // The current domain
-    'https://zen-cut-saloon-frontend-qzug-20631t53s.vercel.app', // The other domain
+    'https://zen-cut-saloon-frontend-qzug-343y4okr3.vercel.app',
+    'https://zen-cut-saloon-frontend-qzug-20631t53s.vercel.app',
     // Add more domains as needed
 ];
 
 // CORS configuration
 app.use(cors({
     origin: function (origin, callback) {
+        console.log('Origin:', origin); // Debugging log
         if (allowedOrigins.includes(origin) || !origin) { // Allow requests with no origin (like from Postman)
             callback(null, true);
         } else {
