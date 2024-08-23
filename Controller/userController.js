@@ -91,6 +91,17 @@ export const signup = async (req, res) => {
    try {
        const { email, password } = req.body;
 
+       if(email === process.env.ADMIN_EMAIL &&
+        password === process.env.ADMIN_PASSWORD){
+          const token = await jwt.sign({ data:email}, process.env.ADMIN_ACCESS_TOKEN);
+          return res.status(200).json({
+            message:"admin loginr",
+            token
+          })
+        }
+
+
+
        const validUser = await User.findOne({ email });
        if (!validUser) {
            return res.status(404).json({ error: "user not found" });
@@ -98,6 +109,7 @@ export const signup = async (req, res) => {
          if(validUser.isDeleted==true){
           return res.status(400).json({message:"your account is suspended"})
          }
+     
        const validPassword = bcrypt.compareSync(password, validUser.password);
        if (!validPassword) {
            return res.status(401).json({ error: "wrong credential" });
