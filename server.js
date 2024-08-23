@@ -25,7 +25,7 @@ app.use(cors({
         'https://zen-cut-saloon-frontend-qzug-miizgl3iz.vercel.app'
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    allowedHeaders: ['content-Type', 'authorization']
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 mongoose
