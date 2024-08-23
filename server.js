@@ -13,11 +13,21 @@ const app = express();
 
 // app.use(cors("http://localhost:5173"));
 
+// app.use(cors({
+//     origin: 'https://zen-cut-saloon-frontend-qzug.vercel.app',
+//     methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'],
+//     allowedHeaders:['content-Type',"authorization"]
+//   }));
+
 app.use(cors({
-    origin: 'https://zen-cut-saloon-frontend-qzug.vercel.app',
-    methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'],
-    allowedHeaders:['content-Type',"authorization"]
-  }));
+    origin: [
+        'https://zen-cut-saloon-frontend-qzug.vercel.app',
+        'https://zen-cut-saloon-frontend-qzug-miizgl3iz.vercel.app'
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedHeaders: ['content-Type', 'authorization']
+}));
+
 mongoose
   .connect(process.env.db)
   .then(() => console.log("db connected"))
