@@ -93,14 +93,12 @@ export const signup = async (req, res) => {
 
        if(email === process.env.ADMIN_EMAIL &&
         password === process.env.ADMIN_PASSWORD){
-          const token = await jwt.sign({ data:email}, process.env.ADMIN_ACCESS_TOKEN);
-          return res.status(200).json({
-            message:"admin loginr",
+          const token =  jwt.sign({ data:email}, process.env.ADMIN_ACCESS_TOKEN);
+          return res.status(203).json({
+            message:"admin login",
             token
           })
         }
-
-
 
        const validUser = await User.findOne({ email });
        if (!validUser) {
