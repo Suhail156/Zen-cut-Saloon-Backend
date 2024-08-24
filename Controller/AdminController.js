@@ -5,26 +5,26 @@ import shopOwner from "../Models/shopOwnerSchema.js";
 import Shop from "../Models/shopSchema.js";
 import Booking from "../Models/bookingUserSchema.js";
 dotenv.config();
-export const adminLogin = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    if (
-      email === process.env.ADMIN_EMAIL &&
-      password === process.env.ADMIN_PASSWORD
-    ) {
-      const token = jwt.sign({ email }, process.env.ADMIN_ACCESS_TOKEN);
-      res.cookie("access_token", token, { httpOnly: true });
+// export const adminLogin = async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+//     if (
+//       email === process.env.ADMIN_EMAIL &&
+//       password === process.env.ADMIN_PASSWORD
+//     ) {
+//       const token = jwt.sign({ email }, process.env.ADMIN_ACCESS_TOKEN);
+//       res.cookie("access_token", token, { httpOnly: true });
 
-      return res
-        .status(200)
-        .json({ message: "Admin logged in successfully", token });
-    } else {
-      res.status(401).json({ error: "", message: "Unauthorized" });
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
+//       return res
+//         .status(200)
+//         .json({ message: "Admin logged in successfully", token });
+//     } else {
+//       res.status(401).json({ error: "", message: "Unauthorized" });
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 //fetch user in adminside
 
 export const adminFetchUser = async (req, res) => {

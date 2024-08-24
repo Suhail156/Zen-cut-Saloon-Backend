@@ -1,8 +1,8 @@
 import express from 'express'
-import { adminApproveReject, adminBlock, adminEditOwner, adminFetchById, adminFetchShopOwners, adminFetchUser, adminLogin, adminViewBooking, adminViewShop, allbookings, totalBookings } from '../Controller/AdminController.js'
+import { adminApproveReject, adminBlock, adminEditOwner, adminFetchById, adminFetchShopOwners, adminFetchUser, adminViewBooking, adminViewShop, allbookings, totalBookings } from '../Controller/AdminController.js'
 import { adminToken } from '../Middlewares/adminMiddleware.js'
 const router=express.Router()
-router.post('/adminlogin',adminLogin)
+// router.post('/adminlogin',adminLogin)
 
 //users
 router.get('/adminuserview',adminFetchUser) 
