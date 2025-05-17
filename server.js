@@ -20,13 +20,14 @@ const app = express();
 //   }));
 
 app.use(cors({
-    origin: [
-        'https://zen-cut-saloon-frontend-qzug.vercel.app',
-        'https://zen-cut-saloon-frontend-qzug-miizgl3iz.vercel.app'
-    ],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+  origin: [
+    'https://zen-cut-saloon-frontend-qzug.vercel.app',
+    'https://zen-cut-saloon-frontend-qzug-miizgl3iz.vercel.app'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  credentials: true // Important if you're using cookies or auth headers
 }));
+
 
 mongoose
   .connect(process.env.db)
