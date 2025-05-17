@@ -36,11 +36,20 @@ export const sendmail = async (data) => {
     html: htmlContent,
   };
 
-  transporter.sendMail(mailOptions, function (error, info) {
+ // transporter.sendMail(mailOptions, function (error, info) {
+   // if (error) {
+   //   logger.error(error);
+   // } else {
+    //  logger.info("Email sent: " + info.response);
+    //}
+
+    transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
-      logger.error(error);
+      console.error("Error sending email:", error);  // Replaced logger.error
     } else {
-      logger.info("Email sent: " + info.response);
+      console.info("Email sent:", info.response);    // Replaced logger.info
     }
+  });
+
   });
 };
