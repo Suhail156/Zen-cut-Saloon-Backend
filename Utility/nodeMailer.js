@@ -38,9 +38,9 @@ html: htmlContent,
 
 transporter.sendMail(mailOptions, function (error, info) {
 if (error) {
-console.log(error)
+logger.error(error);
 } else {
-console.log(error)
+logger.info("Email sent: " + info.response);
 }
 });
 };
