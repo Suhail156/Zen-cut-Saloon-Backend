@@ -51,5 +51,4 @@ export const sendmail = async (data) => {
     }
   });
 
-  });
 };
