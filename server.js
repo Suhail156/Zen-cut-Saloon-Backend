@@ -27,7 +27,14 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   credentials: true // Important if you're using cookies or auth headers
 }));
-
+//app.use(cors({
+ //   origin: [
+//        'https://zen-cut-saloon-frontend-qzug.vercel.app',
+ //       'https://zen-cut-saloon-frontend-qzug-miizgl3iz.vercel.app'
+ //   ],
+ //   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  //  allowedHeaders: ['Content-Type', 'Authorization']
+//}));
 
 mongoose
   .connect(process.env.db)
